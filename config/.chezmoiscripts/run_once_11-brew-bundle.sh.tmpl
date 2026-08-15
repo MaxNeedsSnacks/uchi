@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# bootstrap: bundles everything from the Brewfile
+set -eu
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+command -v brew >/dev/null 2>&1 || eval "$(/opt/homebrew/bin/brew shellenv)"
+
+brew bundle install --global
+
+{{- end }}

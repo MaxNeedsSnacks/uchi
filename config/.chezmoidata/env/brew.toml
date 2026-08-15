@@ -1,0 +1,9 @@
+# replaces nix-darwin's brew/environment.nix wiring; inert on arch
+[env.brew]
+HOMEBREW_NO_ANALYTICS = "1"
+HOMEBREW_NO_INSECURE_REDIRECT = "1"
+
+# brew bins beat system paths, lose to ~/.local/bin; gnubin (40_) refines on top
+[env.paths]
+20_brew = "/opt/homebrew/bin"
+21_brew_sbin = "/opt/homebrew/sbin"

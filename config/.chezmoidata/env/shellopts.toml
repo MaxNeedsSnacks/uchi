@@ -6,5 +6,5 @@ INPUTRC = "$XDG_CONFIG_HOME/readline/inputrc" # TODO: file still needs content (
 MANROFFOPT = "-c"
 MANPAGER = "manpager"
 FETCHER = "pfetch"
-# TODO: nix-shipped terminfo (ghostty!) + local + system; per-user path survives phase 5
-TERMINFO_DIRS = "/etc/profiles/per-user/max/share/terminfo:$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+# TODO: maybe manually prepend?
+TERMINFO_DIRS = "$XDG_DATA_HOME/terminfo:/opt/homebrew/share/terminfo:/usr/share/terminfo"

@@ -1,2 +1,7 @@
 [env.nix]
 NIXPKGS_ALLOW_UNFREE = "1"
+
+# the xdg-base-dirs user profile (nix-tool packages: nh, nixd, nix-direnv, ...)
+# survives nix-darwin's removal, unlike /etc/profiles/per-user
+[env.paths]
+90_nix_profile = "$HOME/.local/state/nix/profiles/profile/bin"

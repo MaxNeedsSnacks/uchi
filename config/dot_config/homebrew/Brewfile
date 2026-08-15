@@ -1,0 +1,110 @@
+cask_args require_sha: true
+
+# --- IMPORTANT: bootstrap! ---
+brew "chezmoi"
+brew "just"
+brew "mas" # app store CLI — needed for the mas entries below
+brew "topgrade" # the designated upgrade owner for this whole system
+brew "age"
+brew "fish"
+brew "starship"
+
+# --- IMPORTANT: shells! ---
+brew "bash"
+brew "zsh"
+
+# --- IMPORTANT: core programs ---
+brew "gnupg"
+brew "less"
+brew "nano"
+brew "wget"
+brew "tree"
+brew "rsync"
+brew "coreutils"
+brew "gnu-sed"
+brew "grep"
+brew "findutils"
+brew "inetutils"
+brew "max/local/pinentry-touchid" # own formula; bootstrapped by our local tap
+
+# --- jdks ---
+cask "temurin@25"
+cask "temurin@21"
+cask "temurin@17"
+cask "zulu@8"
+
+# --- better coreutils ---
+brew "dust"
+brew "duf"
+brew "eza"
+brew "bat"
+brew "procs"
+brew "fd"
+brew "ripgrep"
+brew "sd"
+brew "hyperfine"
+brew "tealdeer"
+
+# --- cli tools ---
+brew "watch"
+brew "zoxide"
+brew "fzf"
+brew "pwgen"
+brew "jq"
+brew "ffmpeg"
+brew "imagemagick"
+brew "oxipng"
+brew "btop"
+brew "direnv"
+brew "pfetch-rs"
+brew "shfmt"
+brew "pam-reattach"
+brew "rustup"
+brew "zellij"
+brew "yt-dlp"
+
+# --- vcs ---
+brew "git"
+brew "git-lfs"
+brew "gh"
+brew "jj"
+brew "difftastic"
+
+# --- neovim ---
+brew "neovim"
+brew "tree-sitter"
+
+# --- typesetting ---
+brew "texlive"
+brew "typst"
+brew "tinymist"
+brew "typstyle"
+
+# --- fonts ---
+cask "font-fira-code"
+cask "font-jetbrains-mono"
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-libertinus"
+cask "font-raleway"
+
+# --- apps: everywhere ---
+cask "ghostty"
+cask "vscodium"
+cask "gram"
+cask "zen"
+cask "discord"
+cask "raycast"
+cask "linearmouse"
+cask "dockdoor"
+cask "shottr"
+cask "handbrake-app"
+cask "iina"
+cask "macfuse"
+cask "keka"
+cask "tailscale-app"
+cask "nextcloud"
+cask "jetbrains-toolbox"
+
+# --- app store (via mas) ---
+mas "Strongbox", id: 897283731

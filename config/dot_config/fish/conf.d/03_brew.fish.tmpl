@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# brew-shipped fish completions (was nix-darwin's programs.fish.shellInit)
+for dir in /opt/homebrew/share/fish/completions /opt/homebrew/share/fish/vendor_completions.d
+    if test -d $dir; and not contains $dir $fish_complete_path
+        set -p fish_complete_path $dir
+    end
+end
+{{ end -}}

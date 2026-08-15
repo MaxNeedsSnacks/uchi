@@ -1,6 +1,8 @@
-# nix-direnv: cached + gc-rooted `use flake` (hm used to wire this)
+# nix-direnv: cached + gc-rooted `use flake`.
 {{ if eq .chezmoi.os "darwin" -}}
-source /etc/profiles/per-user/{{ .chezmoi.username }}/share/nix-direnv/direnvrc
+_nd="{{ .chezmoi.homeDir }}/.local/state/nix/profiles/profile/share/nix-direnv/direnvrc"
 {{ else -}}
-source /usr/share/nix-direnv/direnvrc
+_nd="/usr/share/nix-direnv/direnvrc"
 {{ end -}}
+[ -f "$_nd" ] && source "$_nd"
+unset _nd

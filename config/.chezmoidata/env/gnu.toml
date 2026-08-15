@@ -1,0 +1,9 @@
+# unprefixed GNU userland on macos: brew hides gnu tools behind g-prefixes
+# unless these gnubin dirs are on PATH. nonexistent on arch (native gnu) —
+# dead PATH entries are skipped silently
+[env.paths]
+40_gnubin_coreutils = "/opt/homebrew/opt/coreutils/libexec/gnubin"
+40_gnubin_sed = "/opt/homebrew/opt/gnu-sed/libexec/gnubin"
+40_gnubin_grep = "/opt/homebrew/opt/grep/libexec/gnubin"
+40_gnubin_findutils = "/opt/homebrew/opt/findutils/libexec/gnubin"
+40_gnubin_inetutils = "/opt/homebrew/opt/inetutils/libexec/gnubin"

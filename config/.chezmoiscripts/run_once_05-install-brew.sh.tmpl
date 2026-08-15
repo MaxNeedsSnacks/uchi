@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# bootstrap: ensures homebrew itself exists before anything brew-touching runs
+set -eu
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+if [ ! -x /opt/homebrew/bin/brew ]; then
+    echo "installing homebrew (the installer will ask for sudo)..."
+    NONINTERACTIVE=1 /bin/bash -c \
+        "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+{{- end }}

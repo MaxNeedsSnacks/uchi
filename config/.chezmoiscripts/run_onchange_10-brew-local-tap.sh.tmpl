@@ -7,19 +7,13 @@
 # {{ end }}
 set -eu
 
-{{ if ne .chezmoi.os "darwin" -}}
-exit 0 # no brew on linux
-{{- end }}
+{{ if eq .chezmoi.os "darwin" -}}
 
-command -v brew >/dev/null 2>&1 || {
-    echo "brew missing; failing so this retries on the next apply" >&2
-    exit 1
-}
+command -v brew >/dev/null 2>&1 || eval "$(/opt/homebrew/bin/brew shellenv)"
 
 tapdir="$(brew --repository)/Library/Taps/max/homebrew-local"
 [ -d "$tapdir" ] || brew tap-new max/local --no-git
 
-for f in "{{ .chezmoi.workingTree }}/formulae/"*.rb; do
-    name="$(basename "$f" .rb)"
-    cp "$f" "$tapdir/Formula/$name.rb"
-done
+cp "{{ .chezmoi.workingTree }}/formulae/"*.rb "$tapdir/Formula/"
+
+{{- end }}
