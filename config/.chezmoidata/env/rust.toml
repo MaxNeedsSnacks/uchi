@@ -1,0 +1,6 @@
+[env.rust]
+CARGO_HOME = "$XDG_DATA_HOME/cargo"
+RUSTUP_HOME = "$XDG_DATA_HOME/rustup"
+
+[env.paths]
+50_cargo = "$CARGO_HOME/bin"

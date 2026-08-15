@@ -1,0 +1,10 @@
+[env.shellopts]
+LESS = "-FRM"
+LESSHISTFILE = "$XDG_STATE_HOME/less/history"
+SQLITE_HISTORY = "$XDG_STATE_HOME/sqlite_history"
+INPUTRC = "$XDG_CONFIG_HOME/readline/inputrc" # TODO: file still needs content (phase 3)
+MANROFFOPT = "-c"
+MANPAGER = "manpager"
+FETCHER = "pfetch"
+# TODO: nix-shipped terminfo (ghostty!) + local + system; per-user path survives phase 5
+TERMINFO_DIRS = "/etc/profiles/per-user/max/share/terminfo:$XDG_DATA_HOME/terminfo:/usr/share/terminfo"

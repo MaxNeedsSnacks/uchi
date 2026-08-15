@@ -1,0 +1,6 @@
+. "$HOME/.config/env.sh"
+
+if [ "$SSH_CONNECTION" ]; then
+   # I have logged in via SSH
+   export PINENTRY_USER_DATA="USE_CURSES=1"
+fi

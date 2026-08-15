@@ -1,0 +1,6 @@
+[vcs]
+name = "max."
+email = "max@someone.ky"
+signingKey = "488F88E52039A0C8!"
+
+difftool = "difft"    # TODO: other difftools?

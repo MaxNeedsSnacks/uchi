@@ -1,0 +1,67 @@
+[aliases]
+a = ["abandon"]
+c = ["commit"]
+d = ["describe"]
+di = ["diff"]
+drop = ["abandon"]
+e = ["edit"]
+ff = ["bookmark", "move", "--to", "last_important(@)"]
+l = ["log"]
+la = ["log", "-r", "::", "-T", "bcr_oneline"]
+ll = ["log", "-s"]
+lp = ["log", "--git", "--ignore-working-copy", "-p", "-r", "::"]
+ls = ["log", "-s", "-r", "::"]
+m = ["move"]
+move = ["squash"]
+n = ["new"]
+p = ["git push"]
+pull = ["rebase", "-d", "trunk()", "--skip-emptied"]
+r = ["rebase"]
+"r@" = ["rebase", "-r", "@", "-d"]
+sq = ["squash"]
+
+[git]
+write-change-id-header = true
+
+[revset-aliases]
+"additional_heads()" = "none()"
+"default(n)" = "present(@) | ancestors(immutable_heads().., n) | present(trunk()) | additional_heads()"
+"last_important(x)" = "latest(ancestors(x) & (merges() | ~empty()))"
+"off(x)" = "x.. | ((x..)- & ::x)"
+"user(x)" = "author(x) | committer(x)"
+
+[revsets]
+log = "default(8)"
+
+[signing]
+backend = "gpg"
+behavior = "own"
+key = {{ .vcs.signingKey | quote }}
+
+[signing.backends.gpg]
+program = "gpg"
+
+[template-aliases]
+bcr_oneline = '''
+"" ++ commit_id.short() ++ " " ++ " " ++ description.first_line() ++ bmarks_maybe ++ "\n"
+'''
+bmarks_maybe = '''
+if(local_bookmarks.len() > 0 || remote_bookmarks.len() > 0,
+  "\n              " ++ local_bookmarks ++ " " ++ remote_bookmarks)
+'''
+
+[ui]
+default-command = "log"
+pager = "bat -p"
+diff-formatter = "difft"
+
+[ui.graph]
+style = "curved"
+
+[user]
+email = {{ .vcs.email | quote }}
+name = {{ .vcs.name | quote }}
+
+[merge-tools.difft]
+program = "difft"
+diff-args = ["--color=always", "--display=inline", "$left", "$right"]

@@ -1,0 +1,5 @@
+# stub: point zsh at the real config dir, everything lives there
+export ZDOTDIR="$HOME/.config/zsh"
+
+# source global env vars
+. ~/.config/env.sh

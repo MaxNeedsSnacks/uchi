@@ -1,0 +1,6 @@
+# shared posix profile (pinentry ssh hint, etc.)
+[[ -f "$HOME/.profile" ]] && emulate sh -c 'source "$HOME/.profile"'
+
+if (( $+commands[nproc] )); then
+	export CMAKE_BUILD_PARALLEL_LEVEL="$(nproc)"
+fi

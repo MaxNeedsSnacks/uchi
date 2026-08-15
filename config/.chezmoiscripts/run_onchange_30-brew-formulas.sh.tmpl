@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# copies local brew formulae from the `formulae` directory of the repo to an actual brew tap.
+# updates when the formula hashes change or new formulae are added:
+# {{ range glob ".local/share/chezmoi/formulae/*.rb" }}
+# {{ . }}: {{ include (joinPath $.chezmoi.homeDir .) | sha256sum }}
+# {{ end }}
+set -eu
+
+{{ if ne .chezmoi.os "darwin" -}}
+exit 0 # no brew on linux
+{{- end }}
+
+command -v brew >/dev/null 2>&1 || {
+    echo "brew missing; failing so this retries on the next apply" >&2
+    exit 1
+}
+
+tapdir="$(brew --repository)/Library/Taps/max/homebrew-local"
+[ -d "$tapdir" ] || brew tap-new max/local --no-git
+
+for f in "{{ .chezmoi.workingTree }}/formulae/"*.rb; do
+    name="$(basename "$f" .rb)"
+    cp "$f" "$tapdir/Formula/$name.rb"
+done

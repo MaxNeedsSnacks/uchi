@@ -1,0 +1,38 @@
+Include conf.d/*
+
+Host github.com
+  hostname github.com
+  identityFile ~/.ssh/id_github
+  identitiesOnly yes
+  user git
+
+Host k0 k1 k2 k3
+  identityFile ~/.ssh/id_karl
+  identitiesOnly yes
+  user dev
+
+Host k0
+  hostname 162.218.229.198
+
+Host k1
+  hostname 66.187.75.222
+
+Host k2
+  hostname 66.187.75.226
+
+Host k3
+  hostname 162.218.229.202
+
+Host *
+  forwardAgent no
+  compression yes
+  serverAliveInterval 0
+  serverAliveCountMax 3
+  hashKnownHosts yes
+  userKnownHostsFile ~/.ssh/known_hosts
+  controlMaster no
+  controlPath ~/.ssh/master-%r@%n:%p
+  controlPersist no
+{{ if eq .chezmoi.os "darwin" -}}
+  identityAgent "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock"
+{{- end }}

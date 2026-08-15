@@ -1,0 +1,5 @@
+[diff]
+    tool = "difftastic"
+
+[difftool "difftastic"]
+	cmd = "difft '--display=inline' $LOCAL $REMOTE"

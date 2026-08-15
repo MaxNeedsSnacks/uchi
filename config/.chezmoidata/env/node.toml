@@ -1,0 +1,12 @@
+[env.node]
+NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc"
+NPM_CONFIG_CACHE = "$XDG_CACHE_HOME/npm"
+NPM_CONFIG_PREFIX = "$XDG_DATA_HOME/npm"
+NODE_REPL_HISTORY = "$XDG_CACHE_HOME/node/repl_history"
+BUN_INSTALL = "$XDG_DATA_HOME/bun"
+DENO_INSTALL_ROOT = "$XDG_DATA_HOME/deno/bin"
+
+[env.paths]
+50_deno = "$DENO_INSTALL_ROOT"
+50_bun = "$BUN_INSTALL/bin"
+50_npm = "$XDG_DATA_HOME/npm/bin"

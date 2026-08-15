@@ -1,0 +1,6 @@
+# linux desktop cleanup vars; inert on macos, harmless everywhere
+[env.desktop]
+KDEHOME = "$XDG_CONFIG_HOME/kde"
+ERRFILE = "$XDG_CACHE_HOME/X11/xsession-errors"
+XCOMPOSECACHE = "$XDG_CACHE_HOME/X11/xcompose"
+WINEPREFIX = "$XDG_DATA_HOME/wine"

@@ -1,0 +1,20 @@
+[".config/fish/themes"]
+    type = "archive"
+    url = "https://github.com/catppuccin/fish/archive/main.tar.gz"
+    stripComponents = 2
+    include = ["*/themes/*.theme"]
+    refreshPeriod = "168h"
+
+[".config/btop/themes-src/catppuccin"]
+    type = "archive"
+    url = "https://github.com/catppuccin/btop/archive/main.tar.gz"
+    stripComponents = 2
+    include = ["*/themes/*.theme"]
+    refreshPeriod = "168h"
+
+[".config/btop/themes-src/rose-pine"]
+    type = "archive"
+    url = "https://github.com/rose-pine/btop/archive/main.tar.gz"
+    stripComponents = 1
+    include = ["*/*.theme"]
+    refreshPeriod = "168h"

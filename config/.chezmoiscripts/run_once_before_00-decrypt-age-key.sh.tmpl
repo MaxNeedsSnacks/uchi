@@ -1,0 +1,14 @@
+#!/bin/sh
+# bootstrap: decrypt the repo-carried age identity once per machine.
+# passphrase lives in your head (backup: password manager).
+set -eu
+
+key="${HOME}/.config/chezmoi/key.txt"
+
+if [ ! -f "${key}" ]; then
+    mkdir -p "${HOME}/.config/chezmoi"
+    chezmoi age decrypt --passphrase \
+        --output "${key}" \
+        "{{ .chezmoi.sourceDir }}/dot_config/chezmoi/key.age"
+    chmod 600 "${key}"
+fi

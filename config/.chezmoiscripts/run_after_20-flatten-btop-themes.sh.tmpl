@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+themes="$HOME/.config/btop/themes"
+mkdir -p "$themes"
+# drop dangling links left by removed upstream themes
+find "$themes" -maxdepth 1 -xtype l -delete
+for f in "$HOME"/.config/btop/themes-src/*/*.theme; do
+    ln -sf "$f" "$themes/$(basename "$f")"
+done

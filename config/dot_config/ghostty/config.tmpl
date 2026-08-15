@@ -1,0 +1,55 @@
+adjust-cursor-thickness = 200%
+background-blur-radius = 20
+background-opacity = 0.900000
+bold-is-bright = false
+clipboard-read = allow
+clipboard-trim-trailing-spaces = true
+clipboard-write = allow
+confirm-close-surface = false
+font-family = JetBrainsMono Nerd Font Mono
+font-feature = +calt, +liga, +dlig
+font-size = 16
+mouse-hide-while-typing = true
+quick-terminal-position = top
+shell-integration-features = cursor,no-sudo,title,ssh-env,ssh-terminfo,path
+theme = dark:kytppuccin-dark,light:kytppuccin-light
+window-colorspace = display-p3
+window-height = 24
+window-padding-balance = true
+window-padding-x = 6
+window-padding-y = 2
+window-step-resize = true
+window-theme = auto
+window-title-font-family = JetBrainsMono Nerd Font Mono
+window-width = 80
+
+{{ if eq .chezmoi.os "darwin" }}
+# darwin
+# Quick Terminal
+keybind = ctrl+shift+x=toggle_quick_terminal
+quick-terminal-position = top
+
+# keybinds
+keybind = cmd+alt+right=goto_split:right
+keybind = cmd+alt+left=goto_split:left
+keybind = cmd+alt+up=goto_split:up
+keybind = cmd+alt+down=goto_split:down
+
+keybind = cmd+shift+right=next_tab
+keybind = cmd+shift+left=previous_tab
+
+# cmd+backspace for mac
+keybind = cmd+backspace=text:\x15
+keybind = option+backspace=text:\x17
+
+# styling
+macos-titlebar-style = tabs
+macos-option-as-alt = right
+macos-icon = custom
+{{ else if eq .chezmoi.os "linux" }}
+# linux
+{{ else }}
+# oops
+{{ end }}
+
+config-file = ?config_extra

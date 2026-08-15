@@ -1,0 +1,3 @@
+[env.jvm]
+GRADLE_USER_HOME = "$XDG_DATA_HOME/gradle"
+M2_HOME = "$XDG_DATA_HOME/m2"

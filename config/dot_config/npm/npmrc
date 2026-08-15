@@ -1,0 +1,4 @@
+cache=/Users/max/.cache/npm
+prefix=/Users/max/.local/share/npm
+logs-dir=/Users/max/.local/state/npm/logs
+init-module=/Users/max/.config/npm/npm-init.js

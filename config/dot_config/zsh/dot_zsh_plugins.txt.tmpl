@@ -1,0 +1,10 @@
+# antidote plugin list, run `update-zsh` after updating to rebuild the cache
+
+{{ if eq .chezmoi.hostname "kynet" -}}
+ohmyzsh/ohmyzsh path:plugins/archlinux
+{{ end -}}
+
+ohmyzsh/ohmyzsh path:plugins/git
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting

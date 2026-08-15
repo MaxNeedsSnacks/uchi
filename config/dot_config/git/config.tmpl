@@ -1,0 +1,48 @@
+[commit]
+	gpgSign = true
+
+[core]
+	autocrlf = "input"
+
+[credential]
+	helper = "{{ if eq .chezmoi.os "darwin" }}osxkeychain{{ else }}libsecret{{ end }}"
+
+[credential "https://gist.github.com"]
+	helper = ""
+	helper = "!gh auth git-credential"
+
+[credential "https://github.com"]
+	helper = ""
+	helper = "!gh auth git-credential"
+
+[diff]
+	tool = "difftastic"
+
+[difftool]
+	prompt = false
+
+[difftool "difftastic"]
+	cmd = "difft '--display=inline' $LOCAL $REMOTE"
+
+[filter "lfs"]
+	clean = "git-lfs clean -- %f"
+	process = "git-lfs filter-process"
+	required = true
+	smudge = "git-lfs smudge -- %f"
+
+[gpg]
+	format = "openpgp"
+
+[gpg "openpgp"]
+	program = "gpg"
+
+[init]
+	defaultBranch = "main"
+
+[tag]
+	gpgSign = true
+
+[user]
+	email = "{{ .vcs.email }}"
+	name = "{{ .vcs.name }}"
+	signingKey = "{{ .vcs.signingKey }}"

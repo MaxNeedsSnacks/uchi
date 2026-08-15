@@ -1,0 +1,228 @@
+#! /bin/zsh
+
+# zsh is my backup shell, so this isn't gonna be nearly as well maintained as fish
+
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+mkdir -p "${HISTFILE:h}"
+HISTSIZE=50000
+SAVEHIST=50000
+
+# set some defaults from grml's zshrc
+setopt append_history share_history extended_history histignorespace auto_cd \
+    extended_glob longlistjobs notify hash_list_all completeinword auto_pushd \
+    pushd_ignore_dups noglobdots noshwordsplit unset interactivecomments
+
+# keep zsh in emacs keymap
+bindkey -e
+
+# word navigation (alt/option + arrow keys)
+bindkey "\e\e[D" backward-word
+bindkey "\e\e[C" forward-word
+bindkey "\e[1;3D" backward-word
+bindkey "\e[1;3C" forward-word
+
+# delete previous word (ctrl+bksp on linux, opt+bksp on macos)
+bindkey '^H' backward-kill-word
+bindkey '\e^?' backward-kill-word
+
+# delete next word (ctrl+del, option+del)
+bindkey '\e[3;5~' kill-word
+
+# delete whole line (shift+del on most terminals)
+bindkey '\e[3;2~' kill-line
+
+typeset -ga ls_options
+typeset -ga grep_options
+
+# Colors on GNU ls(1)
+if ls --color=auto / >/dev/null 2>&1; then
+    ls_options+=(--color=auto)
+# Colors on FreeBSD and OSX ls(1)
+elif ls -G / >/dev/null 2>&1; then
+    ls_options+=(-G)
+fi
+
+# Color on GNU and FreeBSD grep(1)
+if grep --color=auto -q "a" <<<"a" >/dev/null 2>&1; then
+    grep_options+=(--color=auto)
+fi
+
+export CLICOLOR=1
+
+# brew python shim + share dir (fpath is handled system-side by nix-darwin)
+if type brew &>/dev/null; then
+    path=($(brew --prefix)/opt/python/libexec/bin $path)
+    export XDG_DATA_DIRS="$XDG_DATA_DIRS:$(brew --prefix)/share"
+fi
+
+# load a few modules
+for mod in parameter complist deltochar mathfunc; do
+    zmodload -i zsh/$mod
+done && builtin unset -v mod
+
+# --- antidote + self-bootstrap ---
+_plugins_txt="$ZDOTDIR/.zsh_plugins.txt"
+_plugins_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.zsh"
+_plugins_hash="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.sha1"
+mkdir -p "${_plugins_cache:h}"
+
+if [[ -z $ANTIDOTE_PATH ]]; then
+    ANTIDOTE_PATH=$ZDOTDIR/.antidote
+    if [[ ! -d $ANTIDOTE_PATH ]]; then
+        git clone --depth=1 https://github.com/mattmc3/antidote.git $ANTIDOTE_PATH
+    fi
+fi
+source $ANTIDOTE_PATH/antidote.zsh
+
+# sha1sum on gnu, shasum fallback on stock macos
+function _plugins_sha1 {
+    if (($+commands[sha1sum])); then
+        sha1sum "$1"
+    else
+        shasum "$1"
+    fi
+}
+
+function update-zsh {
+    antidote bundle <"$_plugins_txt" >"$_plugins_cache"
+    _plugins_sha1 "$_plugins_txt" >"$_plugins_hash"
+}
+
+# rebuild the static plugin cache when the plugin list changes
+if [[ ! (-e $_plugins_cache && -e $_plugins_hash && $(_plugins_sha1 $_plugins_txt) == $(cat $_plugins_hash)) ]]; then
+    echo "plugin list changed, rebuilding cache..."
+    update-zsh
+fi
+source "$_plugins_cache"
+unset _plugins_txt _plugins_cache _plugins_hash
+# --- end antidote ---
+
+# insert all expansions for expand completer
+zstyle ':completion:*:expand:*' tag-order all-expansions
+zstyle ':completion:*:history-words' list false
+
+# start menu completion only if it could find no unambiguous initial string
+zstyle ':completion:*:correct:*' insert-unambiguous true
+zstyle ':completion:*:corrections' format $'%{\e[0;31m%}%d (errors: %e)%{\e[0m%}'
+zstyle ':completion:*:correct:*' original true
+
+# activate menu
+zstyle ':completion:*:history-words' menu yes
+
+# ignore duplicate entries
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' stop yes
+
+# match uppercase from lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# activate color-completion
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# format on completion
+zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+
+# set warning format from grml
+zstyle ':completion:*:warnings' format $'%{\e[0;31m%}No matches for:%{\e[0m%} %d'
+
+# git completion
+zstyle ':completion:*:*:git:*' script
+
+# initialize and cache completions (after antidote so plugin fpath is in)
+autoload -Uz compinit
+_zcompdump_dir="${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+_zcompdump_file="${_zcompdump_dir}/.zcompdump"
+mkdir -p "${_zcompdump_dir}"
+
+# rebuild completion dump periodically; otherwise use fast cached mode
+if [[ -n "${_zcompdump_file}(#qN.mh+24)" ]]; then
+    compinit -d "${_zcompdump_file}"
+else
+    compinit -d "${_zcompdump_file}" -C
+fi
+unset _zcompdump_dir _zcompdump_file
+
+# enable starship and fancy sudo prompt in gui terminals
+is_gui_terminal=0
+if [[ -n "$TERM_PROGRAM" || -n "$DISPLAY" || -n "$WAYLAND_DISPLAY" || -n "$WT_SESSION" || -n "$KONSOLE_VERSION" ]]; then
+    is_gui_terminal=1
+fi
+
+if ((is_gui_terminal)) && (($+commands[starship])); then
+    eval "$(starship init zsh)"
+fi
+
+if ((is_gui_terminal)); then
+    export SUDO_PROMPT='[1;38;2;252;185;91m  [1;31mpass for[1;36m %p[0m [1;31m[1;33m[1;32m[0m '
+else
+    export SUDO_PROMPT='[1;33m[!] [1;31mpass for[1;36m %p[0m [1;31m>[1;33m>[1;32m>[0m '
+fi
+unset is_gui_terminal
+
+# disable autocorrect
+unsetopt correct
+
+# --- aliases ---
+(($+commands[bat])) && alias cat="bat"
+(($+commands[nvim])) && alias vi="nvim" vim="nvim" vimdiff="nvim -d"
+(($+commands[eza])) && alias ls="eza --icons=auto --group --group-directories-first --header"
+(($+commands[pacman])) && alias freepac="sudo rm /var/lib/pacman/db.lck"
+
+# ytdl convenience aliases (command chosen dynamically)
+typeset ytdl
+# command -v instead of $+commands[]: hyphenated names inside (( )) get
+# mangled into subtraction by shfmt
+if command -v youtube-dl >/dev/null; then
+    ytdl="youtube-dl"
+elif command -v yt-dlp >/dev/null; then
+    ytdl="yt-dlp"
+fi
+
+if [[ -n "$ytdl" ]]; then
+    alias yta-aac="$ytdl --extract-audio --audio-format aac"
+    alias yta-best="$ytdl --extract-audio --audio-format best"
+    alias yta-flac="$ytdl --extract-audio --audio-format flac"
+    alias yta-m4a="$ytdl --extract-audio --audio-format m4a"
+    alias yta-mp3="$ytdl --extract-audio --audio-format mp3"
+    alias yta-opus="$ytdl --extract-audio --audio-format opus"
+    alias yta-vorbis="$ytdl --extract-audio --audio-format vorbis"
+    alias yta-wav="$ytdl --extract-audio --audio-format wav"
+    alias ytv-best="$ytdl -f bestvideo+bestaudio"
+    alias ytdl="$ytdl"
+fi
+unset ytdl
+
+# nvm => fnm
+if (($+commands[fnm])); then
+    alias nvm="fnm"
+    eval "$(fnm env --use-on-cd)"
+    eval "$(fnm completions --shell zsh)"
+fi
+
+# custom scripts, if any
+if [[ -d "$ZDOTDIR/scripts" ]]; then
+    for script in "$ZDOTDIR"/scripts/*.zsh(N); do
+        source "$script"
+    done
+    unset script
+fi
+
+# tool hooks hm used to inject
+(($+commands[zoxide])) && eval "$(zoxide init --cmd cd zsh)"
+(($+commands[fzf])) && eval "$(fzf --zsh)"
+(($+commands[direnv])) && eval "$(direnv hook zsh)"
+
+# only display our fetcher on the first shell,
+# and don't allow too many nested shells
+if [[ -n "$FETCHER" ]]; then
+    if [[ "$SHLVL" -eq 1 ]]; then
+        "$FETCHER"
+    elif [[ "$SHLVL" -gt 16 ]]; then
+        echo "We've gone too deep..."
+        exit 1337
+    fi
+fi
+
+if [[ -o interactive && -t 0 ]]; then
+    export GPG_TTY="$(tty)"
+fi
