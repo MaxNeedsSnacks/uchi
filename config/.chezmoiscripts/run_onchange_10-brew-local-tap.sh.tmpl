@@ -16,4 +16,6 @@ tapdir="$(brew --repository)/Library/Taps/max/homebrew-local"
 
 cp "{{ .chezmoi.workingTree }}/formulae/"*.rb "$tapdir/Formula/"
 
+brew trust max/local
+
 {{- end }}
