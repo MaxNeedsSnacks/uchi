@@ -1,43 +1,39 @@
+# single-use installers
+
 [macos]
-all: timezone pam-touchid login-shell rosetta
+all: brew bootstrap-pkgs rosetta
 
 [linux]
-all: timezone login-shell
+all: bootstrap-pkgs paru
 
-[group("all")]
 [macos]
-timezone:
-    sudo systemsetup -settimezone "Europe/Berlin"
-
-[group("all")]
-[linux]
-timezone:
-    timedatectl set-timezone Europe/Berlin
-
-# sets login shell for the current user to fish
-[group("all")]
-login-shell:
+brew:
     #!/bin/sh
-    fish=$(which fish)
-    grep -qx "$fish" /etc/shells || echo "$fish" | sudo tee -a /etc/shells
-    [ "$SHELL" = "$fish" ] || chsh -s "$fish"
+    if [ ! -x /opt/homebrew/bin/brew ]; then
+        NONINTERACTIVE=1 /bin/bash -c \
+            "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
 
-[group("all")]
-[macos]
-pam-touchid:
-    #!/bin/sh
-    sudo tee /etc/pam.d/sudo_local >/dev/null <<'EOF'
-    auth       optional       /opt/homebrew/lib/pam/pam_reattach.so
-    auth       sufficient     pam_tid.so
-    EOF
-
-[group("all")]
 [macos]
 rosetta:
     softwareupdate --install-rosetta --agree-to-license
 
-# enables remote access via ssh and disables auto sleep for the machine
+[linux]
+bootstrap-pkgs:
+    #!/bin/sh
+    sudo pacman -S --needed --noconfirm base-devel git coreutils fish chezmoi just
+
 [macos]
-darwin-server-settings:
-    sudo systemsetup -setremotelogin on
-    sudo pmset -a sleep 0
+bootstrap-pkgs:
+    #!/bin/sh
+    command -v brew >/dev/null || eval "$(/opt/homebrew/bin/brew shellenv)"
+    brew install --no-ask just chezmoi
+
+[linux]
+paru:
+    #!/bin/sh
+    command -v paru >/dev/null && exit 0
+    sudo pacman -S --needed --noconfirm base-devel git
+    tmp=$(mktemp -d)
+    git clone https://aur.archlinux.org/paru-bin.git "$tmp/paru-bin"
+    cd "$tmp/paru-bin" && makepkg -si --noconfirm

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# installs packages from ~/.config/paru/pkglist.txt as necessary. reruns if below changes
+# pkglist hash: {{ include "dot_config/paru/pkglist.txt" | sha256sum }}
+set -eu
+
+{{ if eq .chezmoi.os "linux" -}}
+
+pkgs=$(grep -vE '^\s*(#|$)' "{{ .chezmoi.sourceDir }}/dot_config/paru/pkglist.txt" || true)
+[ -n "$pkgs" ] || exit 0
+printf '%s\n' "$pkgs" | paru -S --needed -
+
+{{- end }}

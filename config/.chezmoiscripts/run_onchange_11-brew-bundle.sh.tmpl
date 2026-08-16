@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# bootstrap: bundles everything from the Brewfile
+# installs packages from the Brewfile as necessary. reruns if below changes
+# Brewfile hash: {{ include "dot_config/homebrew/Brewfile" | sha256sum }}
 set -eu
 
 {{ if eq .chezmoi.os "darwin" -}}

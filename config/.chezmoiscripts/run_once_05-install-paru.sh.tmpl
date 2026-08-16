@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# bootstrap: ensures paru itself exists before anything pacman-touching runs
+set -eu
+
+{{ if eq .chezmoi.os "linux" -}}
+
+if ! command -v paru >/dev/null 2>&1; then
+    echo "installing paru (will ask for sudo)..."
+    sudo pacman -S --needed --noconfirm base-devel git
+    tmp=$(mktemp -d)
+    git clone https://aur.archlinux.org/paru-bin.git "$tmp/paru-bin"
+    cd "$tmp/paru-bin"
+    makepkg -si --noconfirm
+fi
+
+{{- end }}
