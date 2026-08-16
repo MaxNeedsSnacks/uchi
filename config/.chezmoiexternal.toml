@@ -1,3 +1,13 @@
+{{ if eq .chezmoi.hostname "stargazer" -}}
+# caddy with the cloudflare dns plugin baked in, straight from the official
+# build service; refreshPeriod doubles as plugin-preserving auto-update
+[".local/bin/caddy"]
+    type = "file"
+    url = "https://caddyserver.com/api/download?os={{ .chezmoi.os }}&arch={{ .chezmoi.arch }}&p=github.com/caddy-dns/cloudflare"
+    executable = true
+    refreshPeriod = "168h"
+{{ end -}}
+
 [".config/fish/themes"]
     type = "archive"
     url = "https://github.com/catppuccin/fish/archive/main.tar.gz"

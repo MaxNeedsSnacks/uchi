@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# (re)loads the caddy launch agent when its plist changes; runs after file
+# application so the plist and the external binary already exist
+# plist hash: {{ if eq .chezmoi.hostname "stargazer" }}{{ includeTemplate "Library/LaunchAgents/ky.someone.caddy.plist.tmpl" . | sha256sum }}{{ end }}
+set -eu
+
+{{ if eq .chezmoi.hostname "stargazer" -}}
+
+mkdir -p "$HOME/.local/state/caddy"
+launchctl bootout "gui/$(id -u)/ky.someone.caddy" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/ky.someone.caddy.plist"
+
+{{- end }}
