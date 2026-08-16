@@ -18,3 +18,11 @@
     stripComponents = 1
     include = ["*/*.theme"]
     refreshPeriod = "168h"
+
+[".local/share/gram-dev-extensions/zed-chezmoi-lsp"]
+    type = "archive"
+    url = "https://github.com/alysson-souza/zed-chezmoi-lsp/archive/refs/heads/main.tar.gz"
+    stripComponents = 1
+    # need to exclude anything vendored from the source since that breaks compile
+    exclude = ["*/grammars/**", "*/extension.wasm"]
+    refreshPeriod = "168h"
