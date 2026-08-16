@@ -1,13 +1,16 @@
 #!/bin/sh
 
-# installs packages from ~/.config/paru/pkglist.txt as necessary. reruns if below changes
-# pkglist hash: {{ include "dot_config/paru/pkglist.txt" | sha256sum }}
+# installs packages from the pkglist as necessary
+# updates when the file changes
 set -eu
 
 {{ if eq .chezmoi.os "linux" -}}
+{{ $pkgs := includeTemplate "dot_config/paru/pkglist.txt.tmpl" . | regexReplaceAll `(?m)^\s*(#.*)?$\n?` "" -}}
+{{ if $pkgs -}}
 
-pkgs=$(grep -vE '^\s*(#|$)' "{{ .chezmoi.sourceDir }}/dot_config/paru/pkglist.txt" || true)
-[ -n "$pkgs" ] || exit 0
-printf '%s\n' "$pkgs" | paru -S --needed -
+paru -S --needed - <<'PKGEOF'
+{{ $pkgs -}}
+PKGEOF
 
-{{- end }}
+{{ end -}}
+{{ end }}
