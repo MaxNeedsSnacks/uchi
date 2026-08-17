@@ -5,7 +5,7 @@
 set -eu
 
 {{ if eq .chezmoi.os "linux" -}}
-{{ $pkgs := includeTemplate "dot_config/paru/pkglist.txt.tmpl" . | regexReplaceAll `(?m)^\s*(#.*)?$\n?` "" -}}
+{{ $pkgs := includeTemplate "dot_config/paru/pkglist.txt.tmpl" . | regexReplaceAll `(?m)\s*#.*$` "" | regexReplaceAll `(?m)^\s*$\n?` "" -}}
 {{ if $pkgs -}}
 
 paru -S --needed - <<'PKGEOF'

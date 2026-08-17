@@ -27,5 +27,5 @@ brew-drift:
 pacman-drift:
     #!/bin/bash
     comm -13 \
-      <(grep -vE '^\s*(#|$)' ~/.config/paru/pkglist.txt | sort) \
+      <(sed -e 's/\s*#.*$//' -e '/^\s*$/d' ~/.config/paru/pkglist.txt | sort) \
       <(pacman -Qqe | sort)

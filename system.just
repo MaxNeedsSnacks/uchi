@@ -24,7 +24,7 @@ timezone:
 
 [linux]
 timezone:
-    timedatectl set-timezone Europe/Berlin
+    sudo timedatectl set-timezone Europe/Berlin
 
 # sets login shell for the current user to fish
 login-shell:
