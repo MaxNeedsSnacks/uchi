@@ -6,22 +6,19 @@ Host github.com
   identitiesOnly yes
   user git
 
-Host k0 k1 k2 k3
+Host k0
+  hostname 162.218.229.198
+Host k1
+  hostname 66.187.75.222
+Host k2
+  hostname 66.187.75.226
+Host k3
+  hostname 162.218.229.202
+
+Match host 162.218.229.198,66.187.75.222,66.187.75.226,162.218.229.202
   identityFile ~/.ssh/id_karl
   identitiesOnly yes
   user dev
-
-Host k0
-  hostname 162.218.229.198
-
-Host k1
-  hostname 66.187.75.222
-
-Host k2
-  hostname 66.187.75.226
-
-Host k3
-  hostname 162.218.229.202
 
 Host *
   forwardAgent no
