@@ -7,9 +7,21 @@
 // custom settings, run `gram: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "file_types": {
+    "html": ["*.html"],
+    "javascriptreact": ["*.js"],
+    "css": ["*.css"],
+    "XML": ["*.svg"],
+    "markdown": ["*.kubedoc"],
+  },
+  "node": {
+    "allow_npm_install": true,
+    "allow_prettier_download": false,
+    "allow_binary_download": false,
+  },
   "languages": {
     "YAML": {
-      "tab_size": 2,
+      "tab_size": 4,
     },
   },
   "ssh_connections": [
@@ -53,12 +65,51 @@
   "buffer_font_features": {
     "calt": true,
   },
-  "file_types": {
-    "markdown": ["*.kubedoc"],
-  },
   "load_direnv": "shell_hook",
   "format_on_save": "on",
   "lsp": {
+    "lemminx": {
+      "binary": {
+        "allow_binary_download": false,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "mdx-analyzer": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "vscode-css-language-server": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "astro-language-server": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "eslint": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "vtsls": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
+    "tailwindcss-language-server": {
+      "binary": {
+        "allow_binary_download": true,
+      },
+      "enable_lsp_tasks": true,
+    },
     "rust-analyzer": {
       "binary": {
         "allow_binary_download": true,
