@@ -1,3 +1,0 @@
-[merge-tools.difft]
-program = "difft"
-diff-args = ["--color=always", "--display=inline", "$left", "$right"]
