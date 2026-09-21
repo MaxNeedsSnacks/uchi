@@ -1,0 +1,2 @@
+[env.paths]
+15_mise_shims = "$XDG_DATA_HOME/mise/shims"

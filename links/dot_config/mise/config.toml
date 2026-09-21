@@ -1,0 +1,5 @@
+[tools]
+go = "1.27"
+node = "24" # LTS, some packages are picky about that
+python = "3.14"
+# todo: rust?

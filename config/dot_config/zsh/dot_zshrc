@@ -211,6 +211,7 @@ fi
 (($+commands[zoxide])) && eval "$(zoxide init --cmd cd zsh)"
 (($+commands[fzf])) && eval "$(fzf --zsh)"
 (($+commands[direnv])) && eval "$(direnv hook zsh)"
+(($+commands[mise])) && eval "$(mise activate zsh)"
 
 # only display our fetcher on the first shell,
 # and don't allow too many nested shells

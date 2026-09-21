@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# installs / updates global tools as necessary
+# mise config hash: {{ include "../links/dot_config/mise/config.toml" | sha256sum }}
+set -eu
+
+
+if ! command -v mise >/dev/null 2>&1; then
+    echo "mise is not installed! did bundled packages fail?"
+    exit 1
+fi
+
+mise install --yes

@@ -12,5 +12,4 @@ PIP_LOG_FILE = "$XDG_STATE_HOME/pip/log"
 PYLINTHOME = "$XDG_DATA_HOME/pylint"
 PYLINTRC = "$XDG_CONFIG_HOME/pylint/pylintrc"
 WORKON_HOME = "$XDG_DATA_HOME/virtualenvs"
-PYENV_ROOT = "$XDG_DATA_HOME/pyenv" # drop if mise wins the java/js decision
 VIRTUAL_ENV_DISABLE_PROMPT = 1
