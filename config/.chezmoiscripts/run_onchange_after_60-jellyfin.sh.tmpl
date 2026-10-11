@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# (re)loads the jellyfin launch agent when its plist changes; runs after file
+# application so the plist and the external binary already exist
+# plist hash: {{ if eq .chezmoi.hostname "stargazer" }}{{ includeTemplate "Library/LaunchAgents/ky.someone.jellyfin.plist.tmpl" . | sha256sum }}{{ end }}
+set -eu
+
+{{ if eq .chezmoi.hostname "stargazer" -}}
+
+mkdir -p "/srv/jellyfin/log"
+launchctl bootout "gui/$(id -u)/ky.someone.jellyfin" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/ky.someone.jellyfin.plist"
+
+{{- end }}

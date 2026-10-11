@@ -68,6 +68,13 @@
   "load_direnv": "shell_hook",
   "format_on_save": "on",
   "lsp": {
+    "chezmoi-lsp": {
+      "binary": {
+        "allow_binary_download": true
+      },
+      "enable_lsp_tasks": true
+    },
+    // still busted yaaaaay
     "lemminx": {
       "binary": {
         "allow_binary_download": false,

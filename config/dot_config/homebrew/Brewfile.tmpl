@@ -114,3 +114,8 @@ cask "jetbrains-toolbox"
 
 # --- app store (via mas) ---
 mas "Strongbox", id: 897283731
+
+{{ if eq .chezmoi.hostname "stargazer" -}}
+# --- stargazer specific ---
+cask "jellyfin"
+{{- end }}
