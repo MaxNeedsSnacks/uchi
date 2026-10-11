@@ -7,7 +7,7 @@ set -eu
 
 {{ if eq .chezmoi.hostname "stargazer" -}}
 
-mkdir -p "/srv/jellyfin/log"
+mkdir -p "/data/srv/jellyfin/log"
 launchctl bootout "gui/$(id -u)/ky.someone.jellyfin" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/ky.someone.jellyfin.plist"
 

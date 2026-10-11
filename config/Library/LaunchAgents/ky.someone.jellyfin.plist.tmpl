@@ -8,10 +8,10 @@
 	<key>ProgramArguments</key>
 	<array>
     	<string>/Applications/Jellyfin.app/Contents/MacOS/jellyfin</string>
-        <string>--datadir</string>   <string>/srv/jellyfin/data</string>
-        <string>--configdir</string> <string>/srv/jellyfin/config</string>
-        <string>--cachedir</string>  <string>/srv/jellyfin/cache</string>
-        <string>--logdir</string>    <string>/srv/jellyfin/log</string>
+        <string>--datadir</string>   <string>/data/srv/jellyfin/data</string>
+        <string>--configdir</string> <string>/data/srv/jellyfin/config</string>
+        <string>--cachedir</string>  <string>/data/srv/jellyfin/cache</string>
+        <string>--logdir</string>    <string>/data/srv/jellyfin/log</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
@@ -26,9 +26,9 @@
     <key>ProcessType</key>
     <string>Interactive</string>
 	<key>StandardOutPath</key>
-	<string>/srv/jellyfin/log/launchd.out</string>
+	<string>/data/srv/jellyfin/log/launchd.out</string>
 	<key>StandardErrorPath</key>
-	<string>/srv/jellyfin/log/launchd.err</string>
+	<string>/data/srv/jellyfin/log/launchd.err</string>
 </dict>
 </plist>
 {{ end -}}
