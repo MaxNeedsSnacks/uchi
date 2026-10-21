@@ -5,6 +5,8 @@ return {
 	{
 		"mfussenegger/nvim-jdtls",
 		ft = "java",
+		-- mason puts the jdtls binary on PATH
+		dependencies = { "mason-org/mason.nvim" },
 		config = function()
 			require("config.lsp.jdtls").setup()
 		end,
@@ -19,26 +21,20 @@ return {
 	},
 	-- lsp
 	{
-		"dundalek/lazy-lsp.nvim",
+		"mason-org/mason.nvim",
+		cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
+		opts = {},
+	},
+	{
+		"mason-org/mason-lspconfig.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
+			"mason-org/mason.nvim",
 			"neovim/nvim-lspconfig",
 			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/nvim-cmp",
 		},
 		config = function()
-			require("config.lsp.lazy-lsp")
-		end,
-		cond = function()
-			if vim.fn.executable("nix") == 1 then
-				return true
-			else
-				vim.notify_once(
-					"`nix` not available, no language servers will be available!",
-					vim.log.levels.WARN,
-					{ level = "warning" }
-				)
-				return false
-			end
+			require("config.lsp")
 		end,
 	},
 	{

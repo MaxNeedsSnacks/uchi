@@ -56,25 +56,18 @@ local function lsp_keymaps(bufnr)
 	})
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not status_ok then
-	return
-end
-
-M.setup = function() end
-
 M.on_attach = function(client, bufnr)
 	lsp_keymaps(bufnr)
-	if client.name == "nixd" then
-		client.server_capabilities.semanticTokensProvider = nil
-	end
 	if client.server_capabilities.inlayHintProvider then
 		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 	end
 end
 
-M.capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if status_ok then
+	M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
+end
 
 return M
