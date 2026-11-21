@@ -68,6 +68,26 @@
   "load_direnv": "shell_hook",
   "format_on_save": "on",
   "lsp": {
+    "lua-language-server": {
+      "binary": {
+        "allow_binary_download": true
+      },
+      "enable_lsp_tasks": true
+    },
+    "tombi": {
+      "binary": {
+        "allow_binary_download": true
+      },
+      "enable_lsp_tasks": true
+    },
+    "clangd": {
+      "binary": {
+        "ignore_system_version": true,
+        "enable_auto_updates": true,
+        "allow_binary_download": true
+      },
+      "enable_lsp_tasks": true
+    },
     "chezmoi-lsp": {
       "binary": {
         "allow_binary_download": true
